@@ -1,0 +1,9 @@
+<p>Bookmark</p>
+<p>Name: <input id="title" ng-model="title"></p>
+<p>Folder:
+    <select ng-model="selectedFolder" ng-options="name as folder.title for folder in folders">
+    </select>
+</p>
+<button ng-click="remove()">Remove</button>
+<button ng-click="edit()">Edit...</button>
+<button ng-click="done()"><b>Done</b></button>
