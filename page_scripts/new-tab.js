@@ -3,8 +3,7 @@ var newTabApp = angular.module('newTab', [/*'ngSanitize', */'ui.bootstrap']);
 newTabApp.controller('newTabCtrl', function($scope, $modal) {
 
     $scope.history = new History();
-
-    $scope.historyPeriod = 0;
+    $scope.blackList = new BlackList();
 
     $scope.updateHistory = function(daysAgo) {
         $scope.history.update(daysAgo);
@@ -30,11 +29,6 @@ newTabApp.controller('newTabCtrl', function($scope, $modal) {
             $log.info('Modal dismissed at: ' + new Date());
         });
     };
-
-    $scope.blackList = new BlackList();
-
-    $scope.updateHistory($scope.historyPeriod);
-
 });
 
 //newTabApp.filter('partition', function() {

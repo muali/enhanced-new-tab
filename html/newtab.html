@@ -12,12 +12,17 @@
         <script src = "../libs/ui-bootstrap-tpls-0.12.0.js"></script>
         <script src = "../libs/URL.js"></script>
 
+        <script src = "../page_scripts/settings.js"></script>
         <script src = "../page_scripts/utils.js"></script>
         <script src = "../page_scripts/listened-data.js"></script>
+        <script src = "../page_scripts/filters.js"></script>
         <script src = "../page_scripts/blacklist.js"></script>
+        <script src = "../page_scripts/data.js"></script>
         <script src = "../page_scripts/history.js"></script>
         <script src = "../page_scripts/new-tab.js"></script>
+        <script src = "../page_scripts/domains-list.js"></script>
         <script src = "../page_scripts/domains-bar-ctrl.js"></script>
+        <script src = "../page_scripts/url-list.js"></script>
         <script src = "../page_scripts/url-bar-ctrl.js"></script>
         <!--Bookmarks part-->
         <!--<script type = "text/ng-template" id = "bookmark_dialog_small.html" src = "bookmark_dialog_small.html"></script>-->
@@ -30,23 +35,23 @@
     </head>
 
     <body ng-controller = "newTabCtrl">
-        <div class = "header">
+<!--         <div class = "header">
             <button class = "historyRequest" ng-click = "updateHistory(0)">All time</button>
             <button class = "historyRequest" ng-click = "updateHistory(30)">30 days</button>
             <button class = "historyRequest" ng-click = "updateHistory(60)">60 days</button>
             <button ng-click="doBookmark()">ds</button>
-        </div>
+        </div> -->
         <table>
             <td></td>
-            <td>
+            <td style="vertical-align:top">
                 <div ng-controller="domainsBarCtrl" class = "domainsContainer">
-                    <div class = "domainItem" ng-repeat = "domain in domainsList.data">
+                    <div class = "domainItem" ng-repeat = "domain in filteredDomainsList.domains">
                         {{domain.visitCount}}
-                        <button ng-click = "expandedDomains[domain.name] = !expandedDomains[domain.name]">+</button>
+                        <button ng-click = "domainItem.show = !domainItem.show">+</button>
                         <a href = "{{domainToURL(domain.name)}}">{{shortString(domainToShort(domain.name))}}</a>
                         <button class = "bookmark" ng-click = "doBookmark(domainToURL(domain.name))">☆</button>
                         <button class = "remove" ng-click = "addDomainToBlackList(domain.name)">x</button>
-                        <div class = "urlItems" ng-show = "expandedDomains[domain.name]">
+                        <div class = "urlItems" ng-show = "domainItem.show">
                             <div class = "urlItem" ng-repeat = "url in domain.urls">
                                 {{url.visitCount}}
                                 <a ng-href = "{{url.url}}">{{shortString(url.url)}}</a>
@@ -57,9 +62,9 @@
                     </div>
                 </div>
             </td>
-            <td>
+            <td style="vertical-align:top">
                 <div ng-controller="urlBarCtrl" class = "urlsContainer">
-                    <div class = "urlItem" ng-repeat = "url in urlList.data">
+                    <div class = "urlItem" ng-repeat = "url in filteredURLList.urls">
                         {{url.visitCount}}
                         {{shortString(url.title)}}
                         <a href = "{{url.url}}">{{shortURL(url.url)}}</a>
