@@ -12,6 +12,7 @@ class BlackList extends ListenedData {
             urls: new Set()
         };
 
+        this.updateFromStorage = this.updateFromStorage.bind(this);
         this.onStorageChanged = this.onStorageChanged.bind(this);
         this.add = this.add.bind(this);
         this.updateStored = this.updateStored.bind(this);
@@ -20,11 +21,18 @@ class BlackList extends ListenedData {
 
         chrome.storage.local.get("blackList", function(result) {
             if (typeof result.blackList !== "undefined") {
-                this.domainBar = result.blackList.domainBar;
-                this.urlBar = result.blackList.urlBar;
-                this.notifyAll();
+                this.updateFromStorage(result.blackList);
             }
         }.bind(this));
+    }
+
+    updateFromStorage(blackListStorage) {
+        this.domainBar.domains = new Set(blackListStorage.domainBar.domains)
+        this.domainBar.urls = new Set(blackListStorage.domainBar.urls);
+        this.urlBar.domains = new Set(blackListStorage.urlBar.domains);
+        this.urlBar.urls = new Set(blackListStorage.urlBar.urls);
+
+        this.notifyAll();
     }
 
     onStorageChanged(changes, storageArea) {
@@ -33,13 +41,7 @@ class BlackList extends ListenedData {
         }
 
         if (changes["blackList"]) {
-
-            this.domainBar.domains = new Set(changes["blackList"].newValue.domainBar.domains);
-            this.domainBar.urls = new Set(changes["blackList"].newValue.domainBar.urls);
-            this.urlBar.domains = new Set(changes["blackList"].newValue.urlBar.domains);
-            this.urlBar.urls = new Set(changes["blackList"].newValue.urlBar.urls);
-
-            this.notifyAll();
+            this.updateFromStorage(changes["blackList"].newValue);
         }
     }
 
