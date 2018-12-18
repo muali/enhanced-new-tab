@@ -4,6 +4,13 @@ newTabApp.controller('newTabCtrl', function($scope, $modal) {
 
     $scope.history = new History();
     $scope.blackList = new BlackList();
+    $scope.searchFilter = new SearchFilter();
+
+    $scope.searchQuery = "";
+
+    $scope.searchQueryChanged = function() {
+        $scope.searchFilter.updateSearchQuery($scope.searchQuery);
+    }
 
     $scope.updateHistory = function(daysAgo) {
         $scope.history.update(daysAgo);

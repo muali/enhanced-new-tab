@@ -2,7 +2,9 @@ newTabApp.controller('domainsBarCtrl', function($scope, $sce) {
 
     const domainsList = new DomainsList($scope.history);
     
-    $scope.filter = new BlackListFilter($scope.blackList, true);
+    const blackListFilter = new BlackListFilter($scope.blackList, true);
+    $scope.filter = new MixedFilter([blackListFilter, $scope.searchFilter]);
+
     $scope.filteredDomainsList = new FilteredDomainsList(domainsList, $scope.filter);
 
     $scope.filteredDomainsList.addListener(function(){

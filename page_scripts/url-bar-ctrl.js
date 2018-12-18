@@ -2,7 +2,9 @@ newTabApp.controller('urlBarCtrl', function($scope, $sce) {
 
     const urlList = new URLList($scope.history);
 
-    $scope.filter = new BlackListFilter($scope.blackList, false);
+    const blackListFilter = new BlackListFilter($scope.blackList, false);
+    $scope.filter = new MixedFilter([blackListFilter, $scope.searchFilter]);
+
     $scope.filteredURLList = new FilteredURLList(urlList, $scope.filter);
 
     $scope.filteredURLList.addListener(function(){

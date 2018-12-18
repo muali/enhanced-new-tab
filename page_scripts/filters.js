@@ -33,6 +33,7 @@ class MixedFilter extends Filter {
     constructor(filters) {
         super();
         this.filters = filters;
+        this.filters.forEach(f => f.addListener(this.notifyAll));
     }
 
     filterDomain(domainObject) {
@@ -51,5 +52,23 @@ class MixedFilter extends Filter {
         return true;
     }
 
+}
 
+class SearchFilter extends Filter {
+    constructor() {
+        super();
+        this.searchQuery = "";
+        this.updateSearchQuery = this.updateSearchQuery.bind(this);
+    }
+
+    updateSearchQuery(searchQuery) {
+        if (searchQuery != this.searchQuery) {
+            this.searchQuery = searchQuery;
+            this.notifyAll();
+        }
+    }
+
+    filterUrl(urlObject) {
+        return urlObject.url.search(this.searchQuery) != -1;
+    }
 }
